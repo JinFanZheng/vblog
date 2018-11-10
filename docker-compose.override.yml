@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  vblog:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
