@@ -8,6 +8,7 @@ using NPoco;
 using VBlog.Services.Implements;
 using VBlog.Services.Interfaces;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Http;
 
 namespace VBlog
 {
@@ -23,6 +24,12 @@ namespace VBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             #region Ioc 
@@ -32,6 +39,9 @@ namespace VBlog
                 return new Database(connStr, DatabaseType.MySQL, MySqlClientFactory.Instance);
             });
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IArticleService, ArticleService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ITagService, TagService>();
             #endregion
 
             services.AddSwaggerGen(c =>
@@ -45,13 +55,18 @@ namespace VBlog
                         Name = "MIT",
                         Url = ""
                     },
-                    Contact=new Contact {
-                        Email="zheng_jinfan@126.com",
-                        Name="VanZ",
-                        Url="https://www.zhengjinfan.cn"
+                    Contact = new Contact
+                    {
+                        Email = "zheng_jinfan@126.com",
+                        Name = "VanZ",
+                        Url = "https://www.zhengjinfan.cn"
                     }
                 });
             });
+            var urls = Configuration.GetSection("AppConfig")["Cores"].Split(',');
+            services.AddCors(options =>
+                options.AddPolicy("AllowSameDomain",builder => builder.WithOrigins(urls).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials())
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,7 +86,15 @@ namespace VBlog
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "VBlog API Document V1.0");
             });
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+            app.UseCors("AllowSameDomain");
         }
     }
 }
