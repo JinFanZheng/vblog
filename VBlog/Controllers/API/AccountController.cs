@@ -13,11 +13,7 @@ using VBlog.Services.Messages.Responses;
 
 namespace VBlog.Controllers
 {
-    [EnableCors("AllowSameDomain")]
-    [Produces("application/json")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ApiControllerBase
     {
 
         private readonly IUserService _userService;

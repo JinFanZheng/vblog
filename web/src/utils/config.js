@@ -1,5 +1,5 @@
 const isDevelopment = process.env.NODE_ENV === 'development';
-const apiDomain = isDevelopment ? 'http://localhost:52174' : '';
+const apiDomain = isDevelopment ? 'https://localhost:5001' : '';
 
 export default {
   isDevelopment,

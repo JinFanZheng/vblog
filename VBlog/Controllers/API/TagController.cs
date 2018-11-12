@@ -13,10 +13,7 @@ using VBlog.Services.Messages.Responses;
 
 namespace VBlog.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TagController : Controller
+    public class TagController : ApiControllerBase
     {
 
         private readonly ITagService _service;
@@ -26,7 +23,7 @@ namespace VBlog.Controllers
         }
         [HttpPost("insert")]
         public async Task<APIResult<SaveResponse>> Insert([FromBody]TagModel model) => await _service.InsertAsync(model);
-        [HttpDelete("delete")]
+        [HttpGet("delete")]
         public async Task<APIResult<string>> Delete(int id) => await _service.DeleteAsync(id);
         [HttpGet("getall")]
         public async Task<APIResult<List<TagModel>>> GetAll() => await _service.GetAllAsync();

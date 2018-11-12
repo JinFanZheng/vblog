@@ -14,10 +14,7 @@ using VBlog.Services.Messages.Responses;
 
 namespace VBlog.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ArticleController : Controller
+    public class ArticleController : ApiControllerBase
     {
 
         private readonly IArticleService _service;
@@ -28,10 +25,10 @@ namespace VBlog.Controllers
         [HttpPost("insert")]
         public async Task<APIResult<SaveResponse>> Insert([FromBody]ArticleModel model) => await _service.SaveAsync(model);
         [HttpPost("update")]
-        public async Task<APIResult<SaveResponse>> update([FromBody]ArticleModel model) => await _service.SaveAsync(model);
-        [HttpDelete("delete")]
+        public async Task<APIResult<SaveResponse>> Update([FromBody]ArticleModel model) => await _service.SaveAsync(model);
+        [HttpGet("delete")]
         public async Task<APIResult<string>> Delete(string guid) => await _service.DeleteAsync(guid);
-        [HttpGet("getpages")]
+        [HttpPost("getpages")]
         public async Task<APIResult<Page<ArticleModel>>> GetPages([FromBody]GetArticlePagesRequest request) => await _service.GetPagesAsync(request);
 
     }

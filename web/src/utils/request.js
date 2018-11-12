@@ -31,11 +31,17 @@ function checkStatus(response) {
 
 const request = async(options) => {
   const url = options.url;
+
+  let headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  };
+  Object.assign(headers, options.headers);
   const option = {
     method: options.method,
     mode: 'cors',
     body: options.params !== undefined && options.params !== null ? JSON.stringify(options.params) : undefined,
-    headers: options.headers || {},
+    headers,
     credentials: process.env.NODE_ENV === 'development' ? 'include' : 'same-origin' //---
   }
   let response = null;
