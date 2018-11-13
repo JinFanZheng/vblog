@@ -31,9 +31,9 @@ namespace VBlog.Domain.Models
         public string Tag { get; set; }
 
         /// <summary>
-        /// 所属分类
+        /// 分类
         /// </summary>
-        public int CategoryId { get; set; }
+        public string Category { get; set; }
 
         /// <summary>
         /// 置顶

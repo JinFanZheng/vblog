@@ -8,6 +8,10 @@ namespace VBlog.Services.Messages.Models
     public class ArticleModel
     {
         /// <summary>
+        /// key
+        /// </summary>
+        public string Key { get; set; }
+        /// <summary>
         /// 主键ID
         /// </summary>
         public int Id { get; set; }
@@ -55,7 +59,7 @@ namespace VBlog.Services.Messages.Models
         /// <summary>
         /// 所属分类
         /// </summary>
-        public int CategoryId { get; set; }
+        public string Category { get; set; }
 
         /// <summary>
         /// 置顶

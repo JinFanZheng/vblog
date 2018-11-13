@@ -1,71 +1,111 @@
 import { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Divider, Tag, Button } from 'antd';
+import { Table, Divider, Tag, Button, Popconfirm } from 'antd';
 import Link from 'umi/link';
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-  render: text => <a href="javascript:;">{text}</a>,
-}, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age',
-}, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address',
-}, {
-  title: 'Tags',
-  key: 'tags',
-  dataIndex: 'tags',
-  render: tags => (
-    <span>
-      {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)}
-    </span>
-  ),
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <a href="javascript:;">Invite {record.name}</a>
-      <Divider type="vertical" />
-      <a href="javascript:;">Delete</a>
-    </span>
-  ),
-}];
-
-const data = [{
-  key: '1',
-  name: 'John Brown',
-  age: 32,
-  address: 'New York No. 1 Lake Park',
-  tags: ['nice', 'developer'],
-}, {
-  key: '2',
-  name: 'Jim Green',
-  age: 42,
-  address: 'London No. 1 Lake Park',
-  tags: ['loser'],
-}, {
-  key: '3',
-  name: 'Joe Black',
-  age: 32,
-  address: 'Sidney No. 1 Lake Park',
-  tags: ['cool', 'teacher'],
-}];
+const columns = [
+  {
+    title: '标题',
+    dataIndex: 'title',
+    key: 'title',
+    render: (text, record) => <Link to={`/article/edit/?guid=${record.guid}`}>{text}</Link>,
+  },
+  {
+    title: '分类',
+    dataIndex: 'category',
+    key: 'category',
+  },
+  {
+    title: '摘要',
+    dataIndex: 'summary',
+    key: 'summary',
+  },
+  {
+    title: '标签',
+    key: 'tag',
+    dataIndex: 'tag',
+    render: tags => (
+      <span>
+        {tags.split(',').map(tag => (
+          <Tag color="blue" key={tag}>
+            {tag}
+          </Tag>
+        ))}
+      </span>
+    ),
+  },
+  {
+    title: '启用',
+    dataIndex: 'isEnabled',
+    key: 'isEnabled',
+    render: p => (
+      <span>
+        <Tag color={p ? 'green' : 'red'} key={p}>
+          {p ? '是' : '否'}
+        </Tag>
+      </span>
+    ),
+  },
+  {
+    title: '允许评论',
+    dataIndex: 'canComment',
+    key: 'canComment',
+    render: p => (
+      <span>
+        <Tag color={p ? 'green' : 'red'} key={p}>
+          {p ? '是' : '否'}
+        </Tag>
+      </span>
+    ),
+  },
+  {
+    title: '排序',
+    dataIndex: 'sort',
+    key: 'sort',
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    key: 'createTime',
+  },
+  {
+    title: '操作',
+    key: 'action',
+    render: (text, record) => (
+      <span>
+        <Link to={`/article/edit/?guid=${record.guid}`}>
+          <Tag color={'#108ee9'}>编辑</Tag>
+        </Link>
+        {/* <Divider type="vertical" /> */}
+        <Popconfirm
+          placement="bottomRight"
+          title={'确定要删除吗?'}
+          onConfirm={() => {
+            console.log(record);
+          }}
+          okText="是"
+          cancelText="否"
+        >
+          <Tag color={'#f50'}>删除</Tag>
+        </Popconfirm>
+      </span>
+    ),
+  },
+];
 
 class Article extends Component {
   render() {
-    console.log(this.props);
+    const { article } = this.props;
+    const { pages } = article;
+    const { count, list } = pages;
     return (
       <div>
         <div>
-          <Link to={'/article/edit'}><Button type='primary'>写博客</Button></Link>
+          <Link to={'/article/edit'}>
+            <Button type="primary">写博客</Button>
+          </Link>
         </div>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={list} />
       </div>
     );
   }

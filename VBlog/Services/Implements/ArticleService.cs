@@ -79,7 +79,7 @@ namespace VBlog.Services.Implements
                     Keyword = model.Keyword,
                     Description = model.Description,
                     Tag = model.Tag,
-                    CategoryId = model.CategoryId,
+                    Category = model.Category,
                     IsTop = model.IsTop,
                     CanComment = model.CanComment
                 };
@@ -101,7 +101,7 @@ namespace VBlog.Services.Implements
             {
                 var result = await _ctx.Query<Article>()
                     .HasWhere(request.Title, p => p.Title.Contains(request.Title))
-                    .HasWhere(request.CategoryId, p => p.CategoryId == request.CategoryId)
+                    .HasWhere(request.Category, p => p.Category.Contains(request.Category))
                     .HasWhere(request.Tag, p => p.Tag.Contains(request.Tag))
                     .OrderByDescending(p => p.Id)
                     .ThenByDescending(p => p.IsTop)
@@ -115,6 +115,7 @@ namespace VBlog.Services.Implements
 
                 res.Data = result.ToViewPage(model => new ArticleModel
                 {
+                    Key = model.Id.ToString(),
                     Guid = model.Guid,
                     CreateTime = model.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     Id = model.Id,
@@ -126,7 +127,7 @@ namespace VBlog.Services.Implements
                     Keyword = model.Keyword,
                     Description = model.Description,
                     Tag = model.Tag,
-                    CategoryId = model.CategoryId,
+                    Category = model.Category,
                     IsTop = model.IsTop,
                     CanComment = model.CanComment
                 });
@@ -164,7 +165,7 @@ namespace VBlog.Services.Implements
                         Keyword = model.Keyword,
                         Description = model.Description,
                         Tag = model.Tag,
-                        CategoryId = model.CategoryId,
+                        Category = model.Category,
                         IsTop = model.IsTop,
                         CanComment = model.CanComment
                     };
@@ -190,7 +191,7 @@ namespace VBlog.Services.Implements
                     entity.Keyword = model.Keyword;
                     entity.Description = model.Description;
                     entity.Tag = model.Tag;
-                    entity.CategoryId = model.CategoryId;
+                    entity.Category = model.Category;
                     entity.IsTop = model.IsTop;
                     entity.CanComment = model.CanComment;
 

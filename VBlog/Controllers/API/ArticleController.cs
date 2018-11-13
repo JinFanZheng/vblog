@@ -22,12 +22,12 @@ namespace VBlog.Controllers
         {
             _service = service;
         }
-        [HttpPost("insert")]
-        public async Task<APIResult<SaveResponse>> Insert([FromBody]ArticleModel model) => await _service.SaveAsync(model);
-        [HttpPost("update")]
-        public async Task<APIResult<SaveResponse>> Update([FromBody]ArticleModel model) => await _service.SaveAsync(model);
+        [HttpPost("save")]
+        public async Task<APIResult<SaveResponse>> Save([FromBody]ArticleModel model) => await _service.SaveAsync(model);
         [HttpGet("delete")]
         public async Task<APIResult<string>> Delete(string guid) => await _service.DeleteAsync(guid);
+        [HttpGet("detail")]
+        public async Task<APIResult<ArticleModel>> Detail(string guid) => await _service.GetDetailAsync(guid);
         [HttpPost("getpages")]
         public async Task<APIResult<Page<ArticleModel>>> GetPages([FromBody]GetArticlePagesRequest request) => await _service.GetPagesAsync(request);
 

@@ -17,7 +17,7 @@ namespace VBlog.Services.Messages.Requests
         public int PageSize { get; private set; }
 
         public string Tag { get; set; }
-        public int? CategoryId { get; set; }
+        public string Category { get; set; }
         public string Title { get; set; }
     }
 }
