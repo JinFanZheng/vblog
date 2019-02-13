@@ -4,8 +4,8 @@
 @{
     ViewBag.Title = "我的主页";
 
-    var articles = ViewBag.Articles as List<VBlog.Services.Messages.Models.ArticleModel>;
-    var categries = ViewBag.Categries as List<VBlog.Services.Messages.Models.CategoryModel>;
+    var articles = ViewBag.Articles as NPoco.Page<VBlog.Services.Messages.Models.ArticleModel>;
+    var categries = ViewBag.Categories as List<VBlog.Services.Messages.Models.CategoryModel>;
 }
 
 <div class="banner">
@@ -38,9 +38,9 @@
             </div>
         }
         <div class="list-item">
-            @if (articles != null)
+            @if (articles != null && articles.Items.Count > 0)
             {
-                foreach (var item in articles)
+                foreach (var item in articles.Items)
                 {
                     <div class="item">
                         <div class="layui-fluid">

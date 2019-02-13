@@ -27,6 +27,7 @@ namespace VBlog.Controllers
                 ViewBag.Categories = categories.Data;
             }
             var articles = await _articleService.GetPagesAsync(new Services.Messages.Requests.GetArticlePagesRequest(1, 10));
+            Console.WriteLine(articles);
             if (articles.Success)
             {
                 ViewBag.Articles = articles.Data;
@@ -34,8 +35,13 @@ namespace VBlog.Controllers
             return View();
         }
 
-        public IActionResult Detail()
+        public async Task<IActionResult> Detail(string guid)
         {
+            var article = await _articleService.GetDetailAsync(guid);
+            if (article.Success)
+            {
+                return View(article.Data);
+            }
             return View();
         }
     }

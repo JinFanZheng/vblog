@@ -1,18 +1,18 @@
-FROM microsoft/aspnetcore:2.1 AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
-FROM microsoft/aspnetcore-build:2.1 AS build
+FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
-COPY *.sln ./
-COPY VBlog/VBlog.csproj VBlog/
-RUN dotnet restore
+COPY ["VBlog/VBlog.csproj", "VBlog/"]
+RUN dotnet restore "VBlog/VBlog.csproj"
 COPY . .
-WORKDIR /src/VBlog
-RUN dotnet build -c Release -o /app
+WORKDIR "/src/VBlog"
+RUN dotnet build "VBlog.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish "VBlog.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
